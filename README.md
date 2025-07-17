@@ -5,8 +5,16 @@ The core rules are implemented in `script.js` and displayed on a simple grid. A 
 
 ## Running locally
 
-Just open `index.html` in a web browser. No build step or additional dependencies are required.
+Just open `index.html` in a web browser. No build step or additional dependencies are required. You can also run a simple CLI version with:
+
+```bash
+npm start
+```
 
 ## Running Tests
 
 Node.js is only used for unit tests of the `nextGeneration` helper. If you wish to run them locally:
+
+```bash
+npm test
+```

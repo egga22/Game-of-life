@@ -1,6 +1,6 @@
 "use strict";
 
-// Conway's Game of Life helper functions for the browser
+// Conway's Game of Life implementation used in both the browser and CLI
 
 function nextGeneration(board) {
   const rows = board.length;
@@ -30,6 +30,35 @@ function nextGeneration(board) {
     }
   }
   return newBoard;
+}
+
+function printBoard(board) {
+  for (const row of board) {
+    console.log(row.map((cell) => (cell ? "#" : ".")).join(""));
+  }
+}
+
+function main() {
+  let board = Array.from({ length: 25 }, () => Array(25).fill(0));
+  board[0][1] = 1;
+  board[1][2] = 1;
+  board[2][0] = 1;
+  board[2][1] = 1;
+  board[2][2] = 1;
+
+  const interval = setInterval(() => {
+    console.clear();
+    printBoard(board);
+    console.log();
+    board = nextGeneration(board);
+  }, 500);
+
+  if (typeof process !== "undefined") {
+    process.on("SIGINT", () => {
+      clearInterval(interval);
+      process.exit();
+    });
+  }
 }
 
 function renderBoard(board, container) {
@@ -135,7 +164,10 @@ if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", startGame);
 }
 
-// Export for Node.js tests
+// Export for Node.js usage
 if (typeof module !== "undefined") {
-  module.exports = { nextGeneration };
+  module.exports = { nextGeneration, printBoard, main };
+  if (require.main === module) {
+    main();
+  }
 }
