@@ -12,10 +12,16 @@ select {
   margin-left: 1em;
 }
 
+.row {
+  line-height: 0; /* remove default line height to eliminate vertical gaps */
+}
+
 .row span {
   display: inline-block;
   width: 12px;
   height: 12px;
+  box-sizing: border-box; /* ensure borders don't alter cell dimensions */
+  vertical-align: top;   /* align cells flush at the top of each row */
 }
 
 .alive {
