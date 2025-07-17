@@ -1,0 +1,24 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#board {
+  display: inline-block;
+  margin-top: 1em;
+}
+
+.row span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+}
+
+.alive {
+  background-color: #333;
+}
+
+.dead {
+  background-color: #fff;
+  border: 1px solid #ddd;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "Browser version of Conway's Game of Life",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  }
+}
