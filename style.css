@@ -8,6 +8,10 @@ body {
   margin-top: 1em;
 }
 
+select {
+  margin-left: 1em;
+}
+
 .row span {
   display: inline-block;
   width: 12px;

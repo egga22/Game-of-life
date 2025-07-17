@@ -40,6 +40,8 @@ function renderBoard(board, container) {
     for (let c = 0; c < board[r].length; c++) {
       const cell = document.createElement("span");
       cell.className = board[r][c] ? "alive" : "dead";
+      cell.dataset.row = r;
+      cell.dataset.col = c;
       rowDiv.appendChild(cell);
     }
     container.appendChild(rowDiv);
@@ -48,13 +50,54 @@ function renderBoard(board, container) {
 
 function startGame() {
   const container = document.getElementById("board");
-  let board = [
-    [0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+  const select = document.getElementById("pattern");
+  const size = 25;
+
+  function createBoard() {
+    return Array.from({ length: size }, () => Array(size).fill(0));
+  }
+
+  const patterns = {
+    Glider: [
+      [0, 1],
+      [1, 2],
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ],
+    Blinker: [
+      [0, -1],
+      [0, 0],
+      [0, 1],
+    ],
+  };
+
+  function applyPattern(board, coords) {
+    const center = Math.floor(size / 2);
+    for (const [r, c] of coords) {
+      const rr = center + r;
+      const cc = center + c;
+      if (rr >= 0 && rr < size && cc >= 0 && cc < size) {
+        board[rr][cc] = 1;
+      }
+    }
+  }
+
+  function resetBoard(name) {
+    const b = createBoard();
+    if (name === "Random") {
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          b[r][c] = Math.random() < 0.3 ? 1 : 0;
+        }
+      }
+    } else if (patterns[name]) {
+      applyPattern(b, patterns[name]);
+    }
+    return b;
+  }
+
+  let board = resetBoard("Glider");
   let running = true;
 
   function step() {
@@ -69,6 +112,20 @@ function startGame() {
     running = !running;
     document.getElementById("toggle").textContent = running ? "Pause" : "Start";
     if (running) step();
+  });
+
+  select.addEventListener("change", () => {
+    board = resetBoard(select.value);
+    renderBoard(board, container);
+  });
+
+  container.addEventListener("click", (e) => {
+    if (!running && e.target.tagName === "SPAN") {
+      const row = parseInt(e.target.dataset.row, 10);
+      const col = parseInt(e.target.dataset.col, 10);
+      board[row][col] = board[row][col] ? 0 : 1;
+      renderBoard(board, container);
+    }
   });
 
   step();
