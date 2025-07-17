@@ -1,6 +1,6 @@
 "use strict";
 
-/** Simple implementation of Conway's Game of Life. */
+// Conway's Game of Life helper functions for the browser
 
 function nextGeneration(board) {
   const rows = board.length;
@@ -32,13 +32,22 @@ function nextGeneration(board) {
   return newBoard;
 }
 
-function printBoard(board) {
-  for (const row of board) {
-    console.log(row.map((cell) => (cell ? "#" : ".")).join(""));
+function renderBoard(board, container) {
+  container.innerHTML = "";
+  for (let r = 0; r < board.length; r++) {
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "row";
+    for (let c = 0; c < board[r].length; c++) {
+      const cell = document.createElement("span");
+      cell.className = board[r][c] ? "alive" : "dead";
+      rowDiv.appendChild(cell);
+    }
+    container.appendChild(rowDiv);
   }
 }
 
-function main() {
+function startGame() {
+  const container = document.getElementById("board");
   let board = [
     [0, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0],
@@ -46,22 +55,30 @@ function main() {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ];
+  let running = true;
 
-  const interval = setInterval(() => {
-    console.clear();
-    printBoard(board);
-    console.log();
+  function step() {
+    renderBoard(board, container);
     board = nextGeneration(board);
-  }, 500);
+    if (running) {
+      setTimeout(step, 500);
+    }
+  }
 
-  process.on("SIGINT", () => {
-    clearInterval(interval);
-    process.exit();
+  document.getElementById("toggle").addEventListener("click", () => {
+    running = !running;
+    document.getElementById("toggle").textContent = running ? "Pause" : "Start";
+    if (running) step();
   });
+
+  step();
 }
 
-if (require.main === module) {
-  main();
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", startGame);
 }
 
-module.exports = { nextGeneration, printBoard };
+// Export for Node.js tests
+if (typeof module !== "undefined") {
+  module.exports = { nextGeneration };
+}

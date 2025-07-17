@@ -1,32 +1,17 @@
 # Game of Life
 
-This repository contains a simple implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) written in JavaScript using Node.js.
+This repository contains a small browser-based version of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life). Open `index.html` in your browser or enable GitHub Pages on this repository to see it running.
 
-The project provides a basic command line interface that simulates the cellular automaton in the terminal. It also exposes helper functions for computing the next board state which are covered by unit tests.
+The core rules are implemented in `script.js` and displayed on a simple grid. A **Start/Pause** button lets you control the simulation.
 
-## Requirements
+## Running locally
 
-- Node.js 18 or later
-
-## Installation
-
-Clone the repository. No additional dependencies are required.
-
-## Usage
-
-Run the simulation with an initial board defined inside `game_of_life.js`:
-
-```bash
-npm start
-```
-
-The program will print successive generations to the terminal until interrupted with `Ctrl+C`.
+Just open `index.html` in a web browser. No build step or additional dependencies are required.
 
 ## Running Tests
 
-Execute unit tests with:
+Node.js is only used for unit tests of the `nextGeneration` helper. If you wish to run them locally:
 
 ```bash
 npm test
 ```
-

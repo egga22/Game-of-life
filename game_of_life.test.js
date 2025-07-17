@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { nextGeneration } = require('./game_of_life');
+const { nextGeneration } = require('./script');
 
 test('blinker pattern', () => {
   const board = [
